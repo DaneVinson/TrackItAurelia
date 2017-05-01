@@ -1,17 +1,17 @@
 import { inject } from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import { WebApi } from '../web-api';
+import { CategoryService } from '../category-service';
 import { CategoryChange } from '../shared/category-change';
 
-@inject(WebApi, EventAggregator)
+@inject(CategoryService, EventAggregator)
 export class Menu {
     public authenticated: boolean;
     public categories: Category[];
     public selectedCategory: Category;
 
-    constructor(private webApi: WebApi, private eventAggregator: EventAggregator) {
+    constructor(private categoryService: CategoryService, private eventAggregator: EventAggregator) {
         this.authenticated = true;
-        this.categories = webApi.getCategories();
+        this.categories = this.categoryService.getCategories();
         this.selectedCategory = null;
         this.eventAggregator.subscribe(CategoryChange, message => this.select(message.contact));
     }

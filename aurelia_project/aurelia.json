@@ -123,7 +123,8 @@
             "exports": "$",
             "main": "",
             "resources": [
-              "build/pure-min.css"
+              "build/pure-min.css",
+              "build/grids-responsive-min.css"
             ]
           },
           {
