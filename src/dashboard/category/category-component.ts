@@ -1,50 +1,58 @@
-import { inject } from 'aurelia-framework';
+import { BindingEngine, inject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { CategoryChange } from '../../shared/category-change';
 import { CategoryService } from '../../category-service';
 
-@inject(CategoryService, EventAggregator)
+@inject(CategoryService, BindingEngine, EventAggregator)
 export class CategoryComponent {
-    public category: Category;
+    public categoryEntity: CategoryEntity;
     public displayModes: string[];
-    public originalCategory: Category;
     public selectedDisplayMode: string;
     public title: string;
 
-    constructor(private categoryService: CategoryService, private eventAggregator: EventAggregator) {
+    constructor(private categoryService: CategoryService, private bindingEngine: BindingEngine, private eventAggregator: EventAggregator) {
         this.displayModes = [ 'Details', 'Data', 'Charting' ];
         this.setDisplay(this.displayModes[0]);
     }
     
     activate(params, routeConfig) {
-        var category = this.categoryService.getCategories().find(c => c.id == params.id);
-        if (category) {
-            this.category = category;
-            this.originalCategory = JSON.parse(JSON.stringify(this.category));
-            this.title = this.category.description + ' (' + this.category.units + ')';
+        var categoryEntity = this.categoryService.getCategoryEntity(params.id);
+        if (categoryEntity) {
+            this.categoryEntity = categoryEntity;
+            var category = this.categoryService.getCategory(this.categoryEntity.id);
+            this.title = category.description + ' (' + category.units + ')';
+            
+            this.bindingEngine
+                .propertyObserver(this.categoryEntity, 'description')
+                .subscribe(this.changedDescription);
+            this.bindingEngine
+                .propertyObserver(this.categoryEntity, 'units')
+                .subscribe(this.changedUnits);
         }
         else {
-            this.category = null;
-            this.originalCategory = null;
+            this.categoryEntity = null;
             this.title = "Select or Add a Category";
         }
-        this.eventAggregator.publish(new CategoryChange(this.category));
+        this.eventAggregator.publish(new CategoryChange(this.categoryEntity));
     }
 
     cancel() {
-        this.category = JSON.parse(JSON.stringify(this.originalCategory));
+        this.categoryService.cancelCategoryChanges(this.categoryEntity.id);
     }
 
-    changed() {
-        console.log('changed');
+    changedDescription(newValue, oldValue) {
+        console.log(this);
+        console.log('old/new: ' + oldValue + ' / ' + newValue);
+    }
+
+    changedUnits(newValue, oldValue) {
+        console.log('old/new: ' + oldValue + ' / ' + newValue);
     }
 
     delete() {
-
     }
 
     save() {
-
     }
 
     setDisplay(displayMode: string){

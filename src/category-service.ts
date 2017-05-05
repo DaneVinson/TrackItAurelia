@@ -8,11 +8,48 @@ export class CategoryService {
         this.refreshCategories();
     }
 
+    cancelCategoryChanges(id: string) {
+        var category = this.getCategory(id);
+        var categoryEntity = this.getCategoryEntity(id);
+        if (category && categoryEntity) {
+            categoryEntity.accountId = category.accountId;
+            categoryEntity.dataPoints = [];
+            categoryEntity.deleted = false;
+            categoryEntity.description = category.description;
+            categoryEntity.dirty = false;
+            categoryEntity.id = category.id;
+            categoryEntity.new = false;
+            categoryEntity.units = category.units;
+            categoryEntity.valid = true;
+        }
+    }
+
+    getCategory(id: string): Category {
+        if (!this.categories || this.categories.length == 0) {
+            return null;
+        }
+        return this.categories.find(c => c.id == id);
+    }
+
     getCategories(refresh: boolean = false): Category[] {
         if (!this.categories || refresh) {
             this.refreshCategories();
         }
         return this.categories;
+    }
+
+    getCategoryEntities(refresh: boolean = false): CategoryEntity[] {
+        if (!this.categories || refresh) {
+            this.refreshCategories();
+        }
+        return this.categoryEntities;
+    }
+
+    getCategoryEntity(id: string): CategoryEntity {
+        if (!this.categories || this.categories.length == 0) {
+            return null;
+        }
+        return this.categoryEntities.find(c => c.id == id);
     }
 
     private refreshCategories() {
@@ -23,7 +60,7 @@ export class CategoryService {
         this.categoryEntities = [];
         if (this.categories && this.categories.length > 0) {
             this.categories.forEach(c => {
-                this.categoryEntities.push({
+                this.categoryEntities.push({                   
                     accountId: c.accountId,
                     dataPoints: c.dataPoints,
                     deleted: false,
