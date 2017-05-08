@@ -8,9 +8,9 @@
             </li>
             <!--Categories tool bar-->
             <li if.bind="authenticated" class="pure-menu-item">
-                <button class="pure-button"><i class="fa fa-lg fa-refresh"></i></button>
-                <button class="pure-button pure-button-success"><i class="fa fa-lg fa-plus"></i></button>
-                <button class="pure-button pure-button-error"><i class="fa fa-lg fa-remove"></i></button>
+                <button click.delegate="refreshCategories()" class="pure-button"><i class="fa fa-lg fa-refresh"></i></button>
+                <button click.delegate="newCategory()" class="pure-button pure-button-success"><i class="fa fa-lg fa-plus"></i></button>
+                <button click.delegate="deleteCategory()" class="pure-button pure-button-error"><i class="fa fa-lg fa-remove"></i></button>
             </li>
             <!--Categories list-->
             <li if.bind="authenticated" class="pure-menu-item" repeat.for="category of categories">

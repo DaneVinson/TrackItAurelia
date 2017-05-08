@@ -25,17 +25,17 @@
     <!--Details-->
     <div style="margin: 0px 0px 0px 20px" if.bind="selectedDisplayMode == 'Details'">
         <br>
-        <form class="pure-form pure-form-stacked">
+        <form class="pure-form pure-form-stacked" autocomplete="off">
             <fieldset>
                 <!--Toolbar-->
                 <div>
-                    <button click.delegate="save()" class="pure-button pure-button-primary">
+                    <button click.delegate="save()" class="pure-button ${categoryEntity.deleted ? 'pure-button-error' : 'pure-button-primary'}" disabled.bind="!canSave">
                         <i class="fa fa-save"></i>&nbsp;Save
                     </button>
                     <button click.delegate="cancel()" class="pure-button">
                         <i class="fa fa-refresh"></i>&nbsp;Cancel
                     </button>
-                    <button click.delegate="delete()" class="pure-button pure-button-error">
+                    <button click.delegate="delete()" class="pure-button pure-button-error" disabled.bind="!canDelete">
                         <i class="fa fa-remove"></i>&nbsp;Delete
                     </button>
                 </div>

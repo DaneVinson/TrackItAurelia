@@ -14,7 +14,7 @@ export class App {
       { route: '', moduleId: 'dashboard/about/about', name: 'about'},
       { route: 'about', moduleId: 'dashboard/about/about', name: 'about'},
       { route: 'contact', moduleId: 'dashboard/contact/contact', name: 'contact'},
-      { route: 'dashboard', moduleId: 'dashboard/about/about', name: 'about'},
+      { route: 'dashboard', moduleId: 'dashboard/category/empty', name: 'empty'},
       { route: 'dashboard/:id', moduleId: 'dashboard/category/category-component', name:'dashboard' }
     ]);
 
